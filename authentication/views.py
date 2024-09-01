@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from . import forms
+from authentication import forms
 
 
 def login_page(request):
@@ -15,7 +15,7 @@ def login_page(request):
             )
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('blog:home')
             else:
                 message = "Identifiants invalides"
     return render(request, "authentication/login.html", context={"form": form, "message": message})
@@ -23,4 +23,4 @@ def login_page(request):
 
 def logout_user(request):
     logout(request)
-    return redirect("login")
+    return redirect("auth:login")
