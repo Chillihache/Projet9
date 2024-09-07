@@ -6,7 +6,12 @@
 <body>
     <h1>LITRevu</h1>
     {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Se déconnecter</a>
+        <a href="{% url 'home' %}">Flux</a>
+        <a href="{% url 'posts' %}">Posts</a>
+        <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Se déconnecter</button>
+        </form>
     {% endif %}
     {% block content %}{% endblock content %}
 </body>
