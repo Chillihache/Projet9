@@ -8,5 +8,5 @@
             <img src="{{ ticket.image.url }}">
         {% endif %}
     {% endfor %}
-    <a href="{% url 'create_ticket' %}">Demander une critique</a>
+    <a href="{% url 'blog:create_ticket' %}">Demander une critique</a>
 {% endblock content %}

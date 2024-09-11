@@ -1,44 +1,37 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.views.generic import View
+from django.views.generic import CreateView, DeleteView
+from django.views.generic import ListView
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from blog import forms, models
+from blog.models import Ticket
 
 
 @login_required
 def home(request):
-    tickets = models.Ticket.objects.all()
+    tickets = Ticket.objects.all()
     return render(request, "blog/home.html", {"tickets": tickets})
-
 
 @login_required
 def posts(request):
     user = request.user
-    tickets = models.Ticket.objects.filter(user=user)
+    tickets = Ticket.objects.filter(user=user)
     return render(request, "blog/posts.html", {"tickets": tickets})
 
-
-class CreateTicket(LoginRequiredMixin, View):
+class CreateTicket(LoginRequiredMixin, CreateView):
     template_name = "blog/create_ticket.html"
-    form_class = forms.TicketForm
+    model = Ticket
+    fields = ('title', 'description', 'image')
+    success_url = reverse_lazy('blog:posts')
 
-    def get(self, request):
-        form = self.form_class
-        return render(request, self.template_name, {"form": form})
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
-    def post(self, request):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            ticket = form.save(commit=False)
-            ticket.user = request.user
-            ticket.save()
-            return redirect('home')
-        return render(request, self.template_name, {"form": form})
+class DeleteTicket(LoginRequiredMixin, DeleteView):
+    model = Ticket
+    success_url = reverse_lazy('blog:posts')
 
-
-@login_required()
-def delete_ticket(request, ticket_id):
-    ticket = models.Ticket.objects.get(id=ticket_id)
-    ticket.delete()
-    return redirect('posts')
 
