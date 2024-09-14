@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Créer une critique</h2>
+    <p>{{ ticket.title }}</p>
+    <p>{{ ticket.description }}</p>
+    <img src="{{ ticket.image.url}}">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Créer la critique</button>
+    </form>
+{% endblock content %}

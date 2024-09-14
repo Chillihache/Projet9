@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>Rechercher un utilisateur</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Rechercher</button>
+</form>
+<p>{{ message }}</p>
+{% for follow in follows %}
+    <p>{{ follow.followed_user.username }}</p>
+    <a href="{% url 'blog:delete_user_follows' follow.id%}">Se désabonner</a>
+{% endfor %}
+{% for follower in followers %}
+    <p>{{ follower.user.username }}</p>
+{% endfor %}
+{% endblock content %}

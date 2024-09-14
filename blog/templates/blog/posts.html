@@ -1,12 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
     <p>Vos posts</p>
-    {% for ticket in tickets %}
-        <p>{{ ticket.title }} - Rédigé par {{ ticket.user }}</p>
-        <p>{{ ticket.description }}</p>
-        {% if ticket.image %}
-            <img src="{{ ticket.image.url }}">
+    {% for post in tickets_and_reviews %}
+        {% if post.title %}
+            <p>{{ post.time_created }}</p>
+            <p>{{ post.title }} - Rédigé par {{ post.user }}</p>
+            <p>{{ post.description }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}">
+            {% endif %}
+            <a href="{% url 'blog:delete_ticket' post.id %}">Supprimer</a>
+            <a href="{% url 'blog:update_ticket' post.id %}">Modifier</a>
+        {% else %}
+            <p>{{ post.time_created }}</p>
+            <p>{{ post.headline }} - Rédigé par {{ post.user }}</p>
+            <p>Ticket lié : {{ post.ticket }}</p>
+            <p>{{ post.rating }} / 5</p>
+            <p>{{ post.body }}</p>
+            <a href="{% url 'blog:delete_review' post.id %}">Supprimer</a>
+            <a href="{% url 'blog:update_review' post.id %}">Modifier</a>
         {% endif %}
-        <a href="{% url 'blog:delete_ticket' ticket.id %}">Supprimer</a>
+    {% endfor %}
+
+
+
+
+
+
+
+
+
+
+    {% for ticket in tickets %}
+
+    {% endfor %}
+    {% for review in reviews %}
+
     {% endfor %}
 {% endblock content %}

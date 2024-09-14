@@ -1,12 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
     <p>Page de flux</p>
-    {% for ticket in tickets %}
-        <p>{{ ticket.title }} - Rédigé par {{ ticket.user }}</p>
-        <p>{{ ticket.description }}</p>
-        {% if ticket.image %}
-            <img src="{{ ticket.image.url }}">
+    <a href="{% url 'blog:create_ticket' %}">Demander une critique</a>
+    <a href="{% url 'blog:create_review_and_ticket' %}">Créer une critique</a>
+    {% for post in tickets_and_reviews %}
+        {% if post.title %}
+            <p>{{ post.time_created }}</p>
+            <p>{{ post.title }} - Rédigé par {{ post.user }}</p>
+            <p>{{ post.description }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}">
+            {% endif %}
+            <a href="{% url 'blog:create_review' post.id %}">Créer une critique</a>
+        {% else %}
+            <p>{{ post.time_created }}</p>
+            <p>{{ post.headline }} - Rédigé par {{ post.user }}</p>
+            <p>Ticket lié : {{ post.ticket }}</p>
+            <p>{{ post.rating }} / 5</p>
+            <p>{{ post.body }}</p>
         {% endif %}
     {% endfor %}
-    <a href="{% url 'blog:create_ticket' %}">Demander une critique</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% for ticket in tickets %}
+
+    {% endfor %}
+    {% for review in reviews %}
+
+    {% endfor %}
 {% endblock content %}
