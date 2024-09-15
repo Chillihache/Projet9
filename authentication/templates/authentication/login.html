@@ -1,10 +1,24 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
+
 {% block content %}
     <p>{{ message }}</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Se connecter</button>
-    </form>
-    <a href="{% url 'auth:signup' %}">S'inscrire</a>
+    <div class="row">
+        <div class="col-6">
+            <h2 class="fs-5 text-center">Inscrivez-vous maintenant</h2>
+            <div class="d-flex justify-content-center">
+                <a href="{% url 'auth:signup' %}" class="btn btn-primary">S'inscrire</a>
+            </div>
+        </div>
+        <div class="col-6">
+            <h2 class="fs-5 text-center">Connectez-vous</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <div class="d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock content %}

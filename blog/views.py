@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.db import IntegrityError
-from django.forms import ModelForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 from django.views.generic.edit import FormView
@@ -8,7 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.models import User
 from blog.models import Ticket, Review, UserFollows
-from blog.forms import FollowForm
+from blog.forms import FollowForm, TicketForm, ReviewForm
 
 
 @login_required
@@ -96,18 +95,6 @@ class UpdateReview(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('blog:posts')
 
 
-class TicketForm(ModelForm):
-    class Meta:
-        model = Ticket
-        fields = ('title', 'description', 'image')
-
-
-class ReviewForm(ModelForm):
-    class Meta:
-        model = Review
-        fields = ('headline', 'rating', 'body')
-
-
 class CreateReviewAndTicket(FormView):
     template_name = "blog/create_review_and_ticket.html"
     form_class = TicketForm
@@ -179,8 +166,13 @@ class Follow(View):
                     message = f"Vous êtes déjà abonnés à {user.username}"
             except User.DoesNotExist:
                 message = f"{form['username'].value()} est introuvable"
-            return render(request, self.template_name, {'form': form, 'message': message,
-                                                        'follows': follows, 'followers': followers})
+
+            return render(request, self.template_name, {
+                'form': form,
+                'message': message,
+                'follows': follows,
+                'followers': followers
+            })
 
     def get_followed_users(self, request):
         followed_users = UserFollows.objects.filter(user=request.user)
