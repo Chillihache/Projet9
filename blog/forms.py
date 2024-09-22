@@ -27,7 +27,7 @@ class ReviewForm(ModelForm):
         (4, '4'),
         (5, '5'),
     ]
-    rating = ChoiceField(choices=RATING_CHOICES, widget=RadioSelect, label="Note")
+    rating = ChoiceField(choices=RATING_CHOICES, widget=RadioSelect(attrs={"class": "d-flex  justify-content-evenly text-center"}), label="Note")
 
     class Meta:
         model = Review
