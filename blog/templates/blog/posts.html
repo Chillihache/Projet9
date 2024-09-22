@@ -1,40 +1,78 @@
 {% extends 'base.html' %}
 {% block content %}
-    <p>Vos posts</p>
+    <h2 class="d-flex justify-content-center">Vos posts</h2>
     {% for post in tickets_and_reviews %}
         {% if post.title %}
-            <p>{{ post.time_created }}</p>
-            <p>{{ post.title }} - Rédigé par {{ post.user }}</p>
-            <p>{{ post.description }}</p>
-            {% if post.image %}
-                <img src="{{ post.image.url }}">
-            {% endif %}
-            <a href="{% url 'blog:delete_ticket' post.id %}">Supprimer</a>
-            <a href="{% url 'blog:update_ticket' post.id %}">Modifier</a>
+            <div class="border border-dark p-3 m-3">
+                <div class="row">
+                    <div class="col">
+                        <p>{{ post.user }} a demandé une critique</p>
+                    </div>
+                    <div class="col">
+                        <p class="d-flex flex-row-reverse"><small>{{ post.time_created }}</small></p>
+                    </div>
+                </div>
+                <p>{{ post.title }}</p>
+                <p>{{ post.description }}</p>
+                <div class="row">
+                    <div class="col">
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}">
+                        {% endif %}
+                    </div>
+                    <div class="col d-flex justify-content-end align-items-end gap-2">
+                        <a href="{% url 'blog:update_ticket' post.id %}" class="btn btn-secondary">Modifier</a>
+                        <a href="{% url 'blog:delete_ticket' post.id %}" class="btn btn-danger">Supprimer</a>
+                    </div>
+                </div>
+            </div>
         {% else %}
-            <p>{{ post.time_created }}</p>
-            <p>{{ post.headline }} - Rédigé par {{ post.user }}</p>
-            <p>Ticket lié : {{ post.ticket }}</p>
-            <p>{{ post.rating }} / 5</p>
-            <p>{{ post.body }}</p>
-            <a href="{% url 'blog:delete_review' post.id %}">Supprimer</a>
-            <a href="{% url 'blog:update_review' post.id %}">Modifier</a>
+            <div class="border border-dark p-3 m-3">
+                <div class="row">
+                    <div class="col">
+                        <p>{{ post.user }} a publié une critique</p>
+                    </div>
+                    <div class="col">
+                        <p class="d-flex flex-row-reverse"><small>{{ post.time_created }}</small></p>
+                    </div>
+                </div>
+                <p class="fs-4">
+                    {{ post.headline }} -
+                    <span class="rating">
+                        {% for i in rating_range %}
+                            {% if i <= post.rating %}
+                                <span class="star filled">★</span>
+                            {% else %}
+                                <span class="star">☆</span>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </p>
+                <p>{{ post.body }}</p>
+                <div class="border border-dark p-3 m-3">
+                    <p>Ticket - {{ post.ticket.user }}</p>
+                    <p> {{ post.ticket.title }}</p>
+                    <p> {{ post.ticket.description }}</p>
+                    {% if post.ticket.image %}
+                        <img src="{{ post.ticket.image.url }}">
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-end align-items-end gap-2">
+                    <a href="{% url 'blog:update_review' post.id %}" class="btn btn-secondary">Modifier</a>
+                    <a href="{% url 'blog:delete_review' post.id %}" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
         {% endif %}
     {% endfor %}
 
-
-
-
-
-
-
-
-
-
-    {% for ticket in tickets %}
-
-    {% endfor %}
-    {% for review in reviews %}
-
-    {% endfor %}
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+

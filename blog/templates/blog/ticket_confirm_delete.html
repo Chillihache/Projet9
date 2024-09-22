@@ -1,10 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="border border-dark p-3 m-3">
+        <div class="row">
+            <div class="col">
+                <p>{{ ticket.user }} a demandé une critique</p>
+            </div>
+            <div class="col">
+                <p class="d-flex flex-row-reverse"><small>{{ ticket.time_created }}</small></p>
+            </div>
+        </div>
+        <p>{{ ticket.title }}</p>
+        <p>{{ ticket.description }}</p>
+            {% if ticket.image %}
+                <img src="{{ ticket.image.url }}">
+            {% endif %}
+    </div>
     <form method='POST'>
         {% csrf_token %}
-        Êtes-vous certain de vouloir supprimer le ticket {{ ticket.id }}
-        <button type="submit">Confirmer</button>
+        <div class="d-flex justify-content-center">
+            <p class="d-flex justify-content-center">Êtes-vous certain de vouloir supprimer ce ticket ?</p>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </div>
+            <div class="col-6">
+                <a href="{% url 'blog:posts' %}" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
     </form>
-    <button type="submit"><a href="{% url 'blog:posts' %}">Retour</a></button>
 {% endblock %}

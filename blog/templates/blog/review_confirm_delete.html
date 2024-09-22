@@ -1,10 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="border border-dark p-3 m-3">
+        <div class="row">
+            <div class="col">
+                <p>{{ review.user }} a publié une critique</p>
+            </div>
+            <div class="col">
+                <p class="d-flex flex-row-reverse"><small>{{ review.time_created }}</small></p>
+            </div>
+        </div>
+        <p class="fs-4">
+            {{ review.headline }} -
+            <span class="rating">
+                {% for i in rating_range %}
+                    {% if i <= review.rating %}
+                        <span class="star filled">★</span>
+                    {% else %}
+                        <span class="star">☆</span>
+                    {% endif %}
+                {% endfor %}
+            </span>
+        </p>
+        <p>{{ review.body }}</p>
+        <div class="border border-dark p-3 m-3">
+             <p>Ticket - {{ review.ticket.user }}</p>
+            <p> {{ review.ticket.title }}</p>
+            <p> {{ review.ticket.description }}</p>
+            {% if review.ticket.image %}
+                <img src="{{ review.ticket.image.url }}">
+            {% endif %}
+        </div>
+    </div>
     <form method='POST'>
         {% csrf_token %}
-        Êtes-vous certain de vouloir supprimer la critique {{ review.id }}
-        <button type="submit">Confirmer</button>
+        <div class="d-flex justify-content-center">
+            <p class="d-flex justify-content-center">Êtes-vous certain de vouloir supprimer cette critique ?</p>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </div>
+            <div class="col-6">
+                <a href="{% url 'blog:posts' %}" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
     </form>
-    <button type="submit"><a href="{% url 'blog:posts' %}">Retour</a></button>
 {% endblock %}

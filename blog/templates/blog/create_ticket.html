@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
+
 {% block content %}
-    <h2>Créer un ticket</h2>
+    <h2 class="d-flex justify-content-center">Créer un ticket</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Créer la demande</button>
+        {% bootstrap_form form %}
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success">Envoyer</button>
+        </div>
     </form>
 {% endblock content %}

@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
+
 {% block content %}
-    <form method="post">
+    <h2 class="d-flex justify-content-center mb-5"> Créer une critique</h2>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        {{ review_form.as_p }}
-        <button type="submit">Créer Ticket et Review</button>
+        <div class="border border-dark p-3">
+            {% bootstrap_form form %}
+        </div>
+        <div class="border border-dark p-3">
+            {% bootstrap_form review_form %}
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success">Envoyer</button>
+            </div>
+        </div>
     </form>
 {% endblock content %}

@@ -1,17 +1,38 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
+
 {% block content %}
-    <p>Rechercher un utilisateur</p>
+    <h2 class="d-flex justify-content-center">Suivre d'autres utilisateurs</h2>
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Rechercher</button>
+        <div class="row align-items-center">
+            <div class="col">
+                {% csrf_token %}
+                {% bootstrap_field form.username show_label=False %}
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-success">Envoyer</button>
+            </div>
+        </div>
     </form>
     <p>{{ message }}</p>
+    <h2 class="d-flex justify-content-center mt-3">Abonnements</h2>
     {% for follow in follows %}
-        <p>{{ follow.followed_user.username }}</p>
-        <a href="{% url 'blog:delete_user_follows' follow.id%}">Se désabonner</a>
+        <div class="row border border-dark align-items-center">
+            <div class="col-9 d-flex align-items-center">
+                <p class="m-2">{{ follow.followed_user.username }}</p>
+            </div>
+            <div class="col-3 d-flex align-items-center justify-content-center border-start border-dark">
+                <a href="{% url 'blog:delete_user_follows' follow.id %}"
+                   class="text-dark text-decoration-none">Désabonner</a>
+            </div>
+        </div>
     {% endfor %}
+    <h2 class="d-flex justify-content-center mt-3">Abonnés</h2>
     {% for follower in followers %}
-        <p>{{ follower.user.username }}</p>
+        <div class="row border border-dark align-items-center">
+            <div class="col-12 d-flex align-items-center">
+                <p class="m-2">{{ follower.user.username }}</p>
+            </div>
+        </div>
     {% endfor %}
 {% endblock content %}

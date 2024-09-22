@@ -3,8 +3,17 @@
 {% block content %}
     <form method='POST'>
         {% csrf_token %}
-        Êtes-vous certain de vouloir vous désabonner de {{ userfollows.id }}
-        <button type="submit">Confirmer</button>
+        <div class="d-flex justify-content-center">
+            <p class="d-flex justify-content-center">
+                Êtes-vous certain de vouloir vous désabonner de {{ userfollows.followed_user.username }} ?</p>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-danger">Se désabonner</button>
+            </div>
+            <div class="col-6">
+                <a href="{% url 'blog:posts' %}" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
     </form>
-    <button type="submit"><a href="{% url 'blog:posts' %}">Retour</a></button>
 {% endblock %}

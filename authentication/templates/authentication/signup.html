@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 
 {% block content %}
-    <h2>Inscription</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">S'inscrire</button>
-    </form>
+    <div class="p-5">
+        <h2 class="text-center">Inscrivez-vous</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="d-flex flex-row-reverse mt-5 gap-2">
+                <button type="submit" class="btn btn-primary">S'inscrire</button>
+                <a href="{% url 'auth:login' %}" class="btn btn-secondary">Retourner</a>
+            </div>
+        </form>
+    </div>
+
 
 {% endblock content %}

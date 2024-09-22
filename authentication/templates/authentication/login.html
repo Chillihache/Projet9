@@ -4,13 +4,13 @@
 {% block content %}
     <p>{{ message }}</p>
     <div class="row">
-        <div class="col-6">
+        <div class="col">
             <h2 class="fs-5 text-center">Inscrivez-vous maintenant</h2>
             <div class="d-flex justify-content-center">
                 <a href="{% url 'auth:signup' %}" class="btn btn-primary">S'inscrire</a>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col">
             <h2 class="fs-5 text-center">Connectez-vous</h2>
             <form method="post">
                 {% csrf_token %}

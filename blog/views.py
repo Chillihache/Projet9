@@ -20,7 +20,10 @@ def home(request):
         tickets_and_reviews += list(Review.objects.filter(user=follow.followed_user))
     tickets_and_reviews += list(Review.objects.filter(ticket__user=user).exclude(user=user))
     tickets_and_reviews = sorted(tickets_and_reviews, key=lambda obj: obj.time_created, reverse=True)
-    return render(request, "blog/home.html", {"tickets_and_reviews": tickets_and_reviews})
+    rating_range = range(1, 6)
+    user_reviews_ticket_ids = list(Review.objects.filter(user=user).values_list('ticket_id', flat=True))
+    return render(request, "blog/home.html", {"tickets_and_reviews": tickets_and_reviews,
+                                              "rating_range": rating_range, "user_reviews_ticket_ids": user_reviews_ticket_ids})
 
 
 @login_required
@@ -28,7 +31,9 @@ def posts(request):
     user = request.user
     tickets_and_reviews = list(Ticket.objects.filter(user=user)) + list(Review.objects.filter(user=user))
     tickets_and_reviews = sorted(tickets_and_reviews, key=lambda obj: obj.time_created, reverse=True)
-    return render(request, "blog/posts.html", {"tickets_and_reviews": tickets_and_reviews})
+    rating_range = range(1, 6)
+    return render(request, "blog/posts.html", {"tickets_and_reviews": tickets_and_reviews,
+                                               "rating_range": rating_range})
 
 
 @login_required
@@ -41,6 +46,12 @@ class CreateTicket(LoginRequiredMixin, CreateView):
     model = Ticket
     fields = ('title', 'description', 'image')
     success_url = reverse_lazy('blog:posts')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["title"].label = "Titre"
+        form.fields["title"].widget.attrs.update({"placeholder": "Titre"})
+        return form
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -60,11 +71,17 @@ class UpdateTicket(LoginRequiredMixin, UpdateView):
     fields = ('title', 'description', 'image')
     success_url = reverse_lazy('blog:posts')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["title"].label = "Titre"
+        form.fields["title"].widget.attrs.update({"placeholder": "Titre"})
+        return form
+
 
 class CreateReview(LoginRequiredMixin, CreateView):
     template_name = "blog/create_review.html"
     model = Review
-    fields = ('headline', 'rating', 'body')
+    form_class = ReviewForm
     success_url = reverse_lazy('blog:posts')
 
     def get_context_data(self, **kwargs):
@@ -83,16 +100,28 @@ class CreateReview(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class DeleteUserFollows(LoginRequiredMixin, DeleteView):
-    model = UserFollows
-    success_url = reverse_lazy('blog:follow')
+class DeleteReview(LoginRequiredMixin, DeleteView):
+    model = Review
+    success_url = reverse_lazy('blog:posts')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        rating_range = range(1, 6)
+        context["rating_range"] = rating_range
+        return context
 
 
 class UpdateReview(LoginRequiredMixin, UpdateView):
     template_name = "blog/update_review.html"
     model = Review
-    fields = ('headline', 'rating', 'body')
+    form_class = ReviewForm
     success_url = reverse_lazy('blog:posts')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        review = self.get_object()
+        context['ticket'] = review.ticket
+        return context
 
 
 class CreateReviewAndTicket(FormView):
@@ -121,7 +150,6 @@ class CreateReviewAndTicket(FormView):
             review.user = self.request.user
             review.ticket = self.object
             review.save()
-
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
@@ -183,24 +211,6 @@ class Follow(View):
         return followers
 
 
-
-class DeleteReview(LoginRequiredMixin, DeleteView):
-    model = Review
-    success_url = reverse_lazy('blog:posts')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+class DeleteUserFollows(LoginRequiredMixin, DeleteView):
+    model = UserFollows
+    success_url = reverse_lazy('blog:follow')
