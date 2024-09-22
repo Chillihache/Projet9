@@ -191,7 +191,7 @@ class Follow(View):
                     else:
                         message = f"Vous êtes déja connecté en tant que {user.username}"
                 except IntegrityError:
-                    message = f"Vous êtes déjà abonnés à {user.username}"
+                    message = f"Vous êtes déjà abonné à {user.username}"
             except User.DoesNotExist:
                 message = f"{form['username'].value()} est introuvable"
 

@@ -7,7 +7,7 @@
         <div class="row align-items-center">
             <div class="col">
                 {% csrf_token %}
-                {% bootstrap_field form.username show_label=False %}
+                {% bootstrap_field form.username show_label=False form_group_class="" %}
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-success">Envoyer</button>
