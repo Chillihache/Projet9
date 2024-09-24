@@ -9,6 +9,10 @@ In a terminal, clone this repository using :
 
     git clone https://github.com/Chillihache/Projet9.git
 
+Open the directory :
+
+    cd Projet9
+
 Create a virtual environment :
 
     python -m venv env
