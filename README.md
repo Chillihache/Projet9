@@ -9,6 +9,10 @@ In a terminal, clone this repository using :
 
     git clone https://github.com/Chillihache/Projet9.git
 
+Open the directory :
+
+    cd Projet9
+
 Create a virtual environment :
 
     python -m venv env
@@ -26,15 +30,3 @@ Then, run the server :
     python manage.py runserver
 
 You can now open the website locally by typing http://localhost:8000/ in your web browser
-
-Directory Composition
--
-
-This repository includes:
-- scripts : folder including scripts in JavaScript
-- styles : folder including CSS files
-- .gitattributes
-- .gitignore
-- README.md
-- index.html
-- logo.png
