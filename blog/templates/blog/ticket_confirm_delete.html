@@ -13,7 +13,9 @@
         <p>{{ ticket.title }}</p>
         <p>{{ ticket.description }}</p>
             {% if ticket.image %}
-                <img src="{{ ticket.image.url }}">
+                <img src="{{ ticket.image.url }}"
+                     alt="Couverture du livre : {{ ticket.title }}"
+                     title="Couverture du livre : {{ ticket.title }}">
             {% endif %}
     </div>
     <form method='POST'>

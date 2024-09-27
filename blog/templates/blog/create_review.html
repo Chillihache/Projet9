@@ -2,6 +2,11 @@
 {% load bootstrap5 %}
 
 {% block content %}
+    <style>
+        .form-control {
+            border: 2px solid black;
+        }
+    </style>
     <h2 class="d-flex justify-content-center mb-5">Créer une critique</h2>
     <div class="border border-dark p-3">
         <p>Vous êtes en train de poster en réponse à</p>
@@ -17,7 +22,9 @@
             <p>{{ ticket.title }}</p>
             <p>{{ ticket.description }}</p>
                 {% if ticket.image %}
-                    <img src="{{ ticket.image.url }}">
+                    <img src="{{ ticket.image.url }}"
+                         alt="Couverture du livre : {{ ticket.title }}"
+                         title="Couverture du livre : {{ ticket.title }}">
                 {% endif %}
             </div>
     </div>

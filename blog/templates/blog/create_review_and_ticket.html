@@ -2,6 +2,11 @@
 {% load bootstrap5 %}
 
 {% block content %}
+    <style>
+        .form-control {
+            border: 2px solid black;
+        }
+    </style>
     <h2 class="d-flex justify-content-center mb-5"> Créer une critique</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}

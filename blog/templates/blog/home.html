@@ -24,7 +24,9 @@
                 <div class="row">
                     <div class="col">
                         {% if post.image %}
-                            <img src="{{ post.image.url }}">
+                            <img src="{{ post.image.url }}"
+                                 alt="Couverture du livre : {{ post.title }}"
+                                 title="Couverture du livre : {{ post.title }}">
                         {% endif %}
                     </div>
                     <div class="col d-flex justify-content-end align-items-end">
@@ -63,7 +65,9 @@
                     <p> {{ post.ticket.title }}</p>
                     <p> {{ post.ticket.description }}</p>
                     {% if post.ticket.image %}
-                        <img src="{{ post.ticket.image.url }}">
+                        <img src="{{ post.ticket.image.url }}"
+                             alt="Couverture du livre : {{ post.ticket.title }}"
+                             title="Couverture du livre : {{ post.ticket.title }}">
                     {% endif %}
                 </div>
             </div>

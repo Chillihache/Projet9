@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DeleteView, UpdateView, View
@@ -64,6 +64,12 @@ class DeleteTicket(LoginRequiredMixin, DeleteView):
     model = Ticket
     success_url = reverse_lazy('blog:posts')
 
+    def dispatch(self, request, *args, **kwargs):
+        ticket = self.get_object()
+        if ticket.user != request.user:
+            return redirect('blog:home')
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UpdateTicket(LoginRequiredMixin, UpdateView):
     template_name = "blog/update_ticket.html"
@@ -76,6 +82,12 @@ class UpdateTicket(LoginRequiredMixin, UpdateView):
         form.fields["title"].label = "Titre"
         form.fields["title"].widget.attrs.update({"placeholder": "Titre"})
         return form
+
+    def dispatch(self, request, *args, **kwargs):
+        ticket = self.get_object()
+        if ticket.user != request.user:
+            return redirect('blog:home')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class CreateReview(LoginRequiredMixin, CreateView):
@@ -110,6 +122,12 @@ class DeleteReview(LoginRequiredMixin, DeleteView):
         context["rating_range"] = rating_range
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        review = self.get_object()
+        if review.user != request.user:
+            return redirect('blog:home')
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UpdateReview(LoginRequiredMixin, UpdateView):
     template_name = "blog/update_review.html"
@@ -122,6 +140,12 @@ class UpdateReview(LoginRequiredMixin, UpdateView):
         review = self.get_object()
         context['ticket'] = review.ticket
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        review = self.get_object()
+        if review.user != request.user:
+            return redirect('blog:home')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class CreateReviewAndTicket(FormView):

@@ -28,7 +28,9 @@
             <p> {{ review.ticket.title }}</p>
             <p> {{ review.ticket.description }}</p>
             {% if review.ticket.image %}
-                <img src="{{ review.ticket.image.url }}">
+                <img src="{{ review.ticket.image.url }}"
+                     alt="Couverture du livre : {{ review.ticket.title }}"
+                     title="Couverture du livre : {{ review.ticket.title }}">
             {% endif %}
         </div>
     </div>
